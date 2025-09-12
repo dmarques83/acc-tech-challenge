@@ -1,0 +1,9 @@
+[tool.robocop]
+# Display activated rules
+reports = ["rules_by_id", "rules_by_severity"]
+
+# To be ignored rules
+ignore = ["0203"]
+
+# Minimal severity level (I = Info, W = Warning, E = Error)
+minimum_severity = "W"
