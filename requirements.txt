@@ -1,0 +1,4 @@
+robotframework
+robotframework-requests
+gherkin2robotframework
+robotframework-robocop

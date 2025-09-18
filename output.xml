@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.3.2 (Python 3.12.3 on linux)" generated="2025-09-18T20:14:49.838387" rpa="false" schemaversion="5">
+<suite id="s1" name="Api User Flow" source="/home/daniel/workspace/acc-tech-challenge/tests/api_user_flow.robot">
+<kw name="Create Account Sessions" owner="Account" type="SETUP">
+<kw name="Create Session" owner="RequestsLibrary">
+<msg time="2025-09-18T20:14:50.225603" level="INFO">Creating Session using : alias=account, url=https://demoqa.com/Account/v1, headers={'Content-Type': 'application/json'},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<arg>${ACCOUNT_ALIAS}</arg>
+<arg>${BASE_URL}/Account/v1</arg>
+<arg>headers={'Content-Type':'application/json'}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="PASS" start="2025-09-18T20:14:50.224286" elapsed="0.006920"/>
+</kw>
+<kw name="Create Session" owner="RequestsLibrary">
+<msg time="2025-09-18T20:14:50.233087" level="INFO">Creating Session using : alias=bookstore, url=https://demoqa.com/BookStore/v1, headers={'Content-Type': 'application/json'},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<arg>${BOOKSTORE_ALIAS}</arg>
+<arg>${BASE_URL}/BookStore/v1</arg>
+<arg>headers={'Content-Type':'application/json'}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="PASS" start="2025-09-18T20:14:50.231973" elapsed="0.001987"/>
+</kw>
+<status status="PASS" start="2025-09-18T20:14:50.190303" elapsed="0.044145"/>
+</kw>
+<test id="s1-t1" name="BDD - Create user, get token, rent 2 books, verify" line="14">
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2025-09-18T20:14:50.237574" level="INFO">${RANDOM_INT} = 1852</msg>
+<var>${RANDOM_INT}</var>
+<arg>random.randint(1000,9999)</arg>
+<arg>modules=random</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2025-09-18T20:14:50.236421" elapsed="0.001778"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2025-09-18T20:14:50.240590" level="INFO">${USERNAME} = demo_user_1852</msg>
+<var>${USERNAME}</var>
+<arg>demo_user_${RANDOM_INT}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2025-09-18T20:14:50.239646" elapsed="0.001320"/>
+</kw>
+<kw name="Given I create a user with username ${USERNAME} and password ${PASSWORD}" source_name="Given I create a user with username ${username} and password ${password}">
+<kw name="Create User" owner="Account">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2025-09-18T20:14:50.250042" level="INFO">${payload} = {'userName': 'demo_user_1852', 'password': 'P@ssw0rd123!'}</msg>
+<var>${payload}</var>
+<arg>userName=${username}</arg>
+<arg>password=${password}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2025-09-18T20:14:50.248569" elapsed="0.001912"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2025-09-18T20:14:52.348741" level="INFO">POST Request : url=https://demoqa.com/Account/v1/User 
+ path_url=/Account/v1/User 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Type': 'application/json', 'Content-Length': '58'} 
+ body=b'{"userName": "demo_user_1852", "password": "P@ssw0rd123!"}' 
+ </msg>
+<msg time="2025-09-18T20:14:52.349965" level="INFO">POST Response : url=https://demoqa.com/Account/v1/User 
+ status=201, reason=Created 
+ headers={'Server': 'nginx/1.17.10 (Ubuntu)', 'Date': 'Thu, 18 Sep 2025 23:14:52 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '88', 'Connection': 'keep-alive', 'X-Powered-By': 'Express', 'ETag': 'W/"58-i+WBH3P88n8DaaAXYoGJ3G5OWeQ"'} 
+ body={"userID":"e7cca0e2-8f7a-4c8f-a744-1aa6c6059153","username":"demo_user_1852","books":[]} 
+ </msg>
+<msg time="2025-09-18T20:14:52.350942" level="INFO">/home/daniel/workspace/acc-tech-challenge/venv/lib/python3.12/site-packages/urllib3/connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'demoqa.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2025-09-18T20:14:52.353880" level="INFO">${resp} = &lt;Response [201]&gt;</msg>
+<var>${resp}</var>
+<arg>${ACCOUNT_ALIAS}</arg>
+<arg>/User</arg>
+<arg>json=${payload}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2025-09-18T20:14:50.251075" elapsed="2.103606"/>
+</kw>
+<kw name="Should Be True" owner="BuiltIn">
+<arg>${resp.status_code} == 201 or ${resp.status_code} == 200</arg>
+<doc>Fails if the given condition is not true.</doc>
+<status status="PASS" start="2025-09-18T20:14:52.356217" elapsed="0.007595"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2025-09-18T20:14:52.368486" level="INFO">${body} = {'userID': 'e7cca0e2-8f7a-4c8f-a744-1aa6c6059153', 'username': 'demo_user_1852', 'books': []}</msg>
+<var>${body}</var>
+<arg>${resp.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2025-09-18T20:14:52.365200" elapsed="0.004320"/>
+</kw>
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2025-09-18T20:14:52.373690" level="INFO">${userId} = e7cca0e2-8f7a-4c8f-a744-1aa6c6059153</msg>
+<var>${userId}</var>
+<arg>${body}.get('userID') or ${body}.get('userId')</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2025-09-18T20:14:52.370793" elapsed="0.004004"/>
+</kw>
+<kw name="Run Keyword If" owner="BuiltIn">
+<arg>'${userId}' == 'None'</arg>
+<arg>Fail</arg>
+<arg>Could not extract userId from Create User response: ${resp.text}</arg>
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<status status="PASS" start="2025-09-18T20:14:52.376068" elapsed="0.001338"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2025-09-18T20:14:52.379367" level="INFO">${USER_ID} = e7cca0e2-8f7a-4c8f-a744-1aa6c6059153</msg>
+<arg>${USER_ID}</arg>
+<arg>${userId}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2025-09-18T20:14:52.378198" elapsed="0.002341"/>
+</kw>
+<arg>${username}</arg>
+<arg>${password}</arg>
+<status status="PASS" start="2025-09-18T20:14:50.247077" elapsed="2.134332"/>
+</kw>
+<status status="PASS" start="2025-09-18T20:14:50.245501" elapsed="2.136784"/>
+</kw>
+<kw name="When I generate an access token for ${USERNAME} and ${PASSWORD}" source_name="When I generate an access token for ${username} and ${password}">
+<kw name="Generate Token For User" owner="Account">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2025-09-18T20:14:52.392727" level="INFO">${payload} = {'userName': 'demo_user_1852', 'password': 'P@ssw0rd123!'}</msg>
+<var>${payload}</var>
+<arg>userName=${username}</arg>
+<arg>password=${password}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2025-09-18T20:14:52.390483" elapsed="0.002732"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2025-09-18T20:14:53.317563" level="INFO">POST Request : url=https://demoqa.com/Account/v1/GenerateToken 
+ path_url=/Account/v1/GenerateToken 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Type': 'application/json', 'Content-Length': '58'} 
+ body=b'{"userName": "demo_user_1852", "password": "P@ssw0rd123!"}' 
+ </msg>
+<msg time="2025-09-18T20:14:53.318311" level="INFO">POST Response : url=https://demoqa.com/Account/v1/GenerateToken 
+ status=200, reason=OK 
+ headers={'Server': 'nginx/1.17.10 (Ubuntu)', 'Date': 'Thu, 18 Sep 2025 23:14:53 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '286', 'Connection': 'keep-alive', 'X-Powered-By': 'Express', 'ETag': 'W/"11e-jd03My/QlRYZSHyUpmm/k4QzRd8"'} 
+ body={"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImRlbW9fdXNlcl8xODUyIiwicGFzc3dvcmQiOiJQQHNzdzByZDEyMyEiLCJpYXQiOjE3NTgyMzcyOTJ9.3pS_b8cc7gQjsJrj5UzYKG6GAU74H23ib3py43Hit6M","expires":"2025-09-25T23:14:52.516Z","status":"Success","result":"User authorized successfully."} 
+ </msg>
+<msg time="2025-09-18T20:14:53.319191" level="INFO">/home/daniel/workspace/acc-tech-challenge/venv/lib/python3.12/site-packages/urllib3/connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'demoqa.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2025-09-18T20:14:53.321673" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>${ACCOUNT_ALIAS}</arg>
+<arg>/GenerateToken</arg>
+<arg>json=${payload}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2025-09-18T20:14:52.394231" elapsed="0.928019"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2025-09-18T20:14:53.329782" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${resp.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2025-09-18T20:14:53.323052" elapsed="0.007338"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2025-09-18T20:14:53.338824" level="INFO">${body} = {'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImRlbW9fdXNlcl8xODUyIiwicGFzc3dvcmQiOiJQQHNzdzByZDEyMyEiLCJpYXQiOjE3NTgyMzcyOTJ9.3pS_b8cc7gQjsJrj5UzYKG6GAU74H23ib3py43Hit6M', 'expires'...</msg>
+<var>${body}</var>
+<arg>${resp.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2025-09-18T20:14:53.331018" elapsed="0.012967"/>
+</kw>
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2025-09-18T20:14:53.347291" level="INFO">${token} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImRlbW9fdXNlcl8xODUyIiwicGFzc3dvcmQiOiJQQHNzdzByZDEyMyEiLCJpYXQiOjE3NTgyMzcyOTJ9.3pS_b8cc7gQjsJrj5UzYKG6GAU74H23ib3py43Hit6M</msg>
+<var>${token}</var>
+<arg>${body}.get('token')</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2025-09-18T20:14:53.345705" elapsed="0.005826"/>
+</kw>
+<kw name="Run Keyword If" owner="BuiltIn">
+<arg>'${token}' == 'None'</arg>
+<arg>Fail</arg>
+<arg>Token not returned by GenerateToken</arg>
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<status status="PASS" start="2025-09-18T20:14:53.353065" elapsed="0.002095"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2025-09-18T20:14:53.360427" level="INFO">${TOKEN} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImRlbW9fdXNlcl8xODUyIiwicGFzc3dvcmQiOiJQQHNzdzByZDEyMyEiLCJpYXQiOjE3NTgyMzcyOTJ9.3pS_b8cc7gQjsJrj5UzYKG6GAU74H23ib3py43Hit6M</msg>
+<arg>${TOKEN}</arg>
+<arg>${token}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2025-09-18T20:14:53.358241" elapsed="0.006216"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2025-09-18T20:14:53.370694" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImRlbW9fdXNlcl8xODUyIiwicGFzc3dvcmQiOiJQQHNzdzByZDEyMyEiLCJpYXQiOjE3NTgyMzcyOTJ9.3pS_b8cc7gQjsJrj5UzYKG6GAU74H23ib3py43Hi...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${token}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2025-09-18T20:14:53.365089" elapsed="0.006058"/>
+</kw>
+<kw name="Update Session" owner="RequestsLibrary">
+<arg>${BOOKSTORE_ALIAS}</arg>
+<arg>headers=${headers}</arg>
+<doc>Updates HTTP Session Headers and Cookies.</doc>
+<status status="PASS" start="2025-09-18T20:14:53.371741" elapsed="0.001353"/>
+</kw>
+<arg>${username}</arg>
+<arg>${password}</arg>
+<status status="PASS" start="2025-09-18T20:14:52.387566" elapsed="0.986094"/>
+</kw>
+<status status="PASS" start="2025-09-18T20:14:52.385272" elapsed="0.988743"/>
+</kw>
+<kw name="And I confirm the user is authorized with ${USERNAME} and ${PASSWORD}" source_name="And I confirm the user is authorized with ${username} and ${password}">
+<kw name="Check User Authorized" owner="Account">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2025-09-18T20:14:53.387902" level="INFO">${payload} = {'userName': 'demo_user_1852', 'password': 'P@ssw0rd123!'}</msg>
+<var>${payload}</var>
+<arg>userName=${username}</arg>
+<arg>password=${password}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2025-09-18T20:14:53.386220" elapsed="0.004090"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2025-09-18T20:14:53.878650" level="INFO">POST Request : url=https://demoqa.com/Account/v1/Authorized 
+ path_url=/Account/v1/Authorized 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Type': 'application/json', 'Content-Length': '58'} 
+ body=b'{"userName": "demo_user_1852", "password": "P@ssw0rd123!"}' 
+ </msg>
+<msg time="2025-09-18T20:14:53.879489" level="INFO">POST Response : url=https://demoqa.com/Account/v1/Authorized 
+ status=200, reason=OK 
+ headers={'Server': 'nginx/1.17.10 (Ubuntu)', 'Date': 'Thu, 18 Sep 2025 23:14:53 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '4', 'Connection': 'keep-alive', 'X-Powered-By': 'Express', 'ETag': 'W/"4-X/5TO4MPCKAyY0ipFgr6/IraRNs"'} 
+ body=true 
+ </msg>
+<msg time="2025-09-18T20:14:53.880046" level="INFO">/home/daniel/workspace/acc-tech-challenge/venv/lib/python3.12/site-packages/urllib3/connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'demoqa.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2025-09-18T20:14:53.880712" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>${ACCOUNT_ALIAS}</arg>
+<arg>/Authorized</arg>
+<arg>json=${payload}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2025-09-18T20:14:53.390939" elapsed="0.490105"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2025-09-18T20:14:53.885337" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${resp.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2025-09-18T20:14:53.881691" elapsed="0.004213"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2025-09-18T20:14:53.889828" level="INFO">${body} = true</msg>
+<var>${body}</var>
+<arg>${resp.text}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2025-09-18T20:14:53.887499" elapsed="0.002880"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2025-09-18T20:14:53.892076" level="INFO">${auth} = true</msg>
+<var>${auth}</var>
+<arg>${body}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2025-09-18T20:14:53.890922" elapsed="0.001688"/>
+</kw>
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2025-09-18T20:14:53.895739" level="FAIL">Evaluating expression "true.lower() == 'true'" failed: NameError: name 'true' is not defined nor importable as module</msg>
+<var>${auth}</var>
+<arg>${body}.lower() == 'true'</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="FAIL" start="2025-09-18T20:14:53.893372" elapsed="0.004073">Evaluating expression "true.lower() == 'true'" failed: NameError: name 'true' is not defined nor importable as module</status>
+</kw>
+<kw name="Run Keyword Unless" owner="BuiltIn">
+<msg time="2025-09-18T20:14:53.899489" level="WARN">Keyword 'BuiltIn.Run Keyword Unless' is deprecated. </msg>
+<arg>${auth}</arg>
+<arg>Fail</arg>
+<arg>User is not authorized (response: ${body})</arg>
+<doc>*DEPRECATED since RF 5.0. Use Native IF/ELSE or `Run Keyword If` instead.*</doc>
+<status status="NOT RUN" start="2025-09-18T20:14:53.898682" elapsed="0.005971"/>
+</kw>
+<arg>${username}</arg>
+<arg>${password}</arg>
+<status status="FAIL" start="2025-09-18T20:14:53.382604" elapsed="0.522891">Evaluating expression "true.lower() == 'true'" failed: NameError: name 'true' is not defined nor importable as module</status>
+</kw>
+<status status="FAIL" start="2025-09-18T20:14:53.379818" elapsed="0.526258">Evaluating expression "true.lower() == 'true'" failed: NameError: name 'true' is not defined nor importable as module</status>
+</kw>
+<kw name="And I list available books">
+<status status="NOT RUN" start="2025-09-18T20:14:53.907158" elapsed="0.000369"/>
+</kw>
+<kw name="And I pick the first two isbns">
+<status status="NOT RUN" start="2025-09-18T20:14:53.909073" elapsed="0.000422"/>
+</kw>
+<kw name="And I add the selected books to the user">
+<status status="NOT RUN" start="2025-09-18T20:14:53.910879" elapsed="0.000678"/>
+</kw>
+<kw name="Then the user details should contain 2 books">
+<status status="NOT RUN" start="2025-09-18T20:14:53.912948" elapsed="0.000464"/>
+</kw>
+<tag>api</tag>
+<tag>bdd</tag>
+<status status="FAIL" start="2025-09-18T20:14:50.234795" elapsed="3.680068">Evaluating expression "true.lower() == 'true'" failed: NameError: name 'true' is not defined nor importable as module</status>
+</test>
+<doc>E2E API flow: create user, token, authorize, list books, add 2 books, check user details</doc>
+<status status="FAIL" start="2025-09-18T20:14:49.845743" elapsed="4.072125"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1" skip="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="0" fail="1" skip="0">api</stat>
+<stat pass="0" fail="1" skip="0">bdd</stat>
+</tag>
+<suite>
+<stat name="Api User Flow" id="s1" pass="0" fail="1" skip="0">Api User Flow</stat>
+</suite>
+</statistics>
+<errors>
+<msg time="2025-09-18T20:14:50.182158" level="WARN">Error in file '/home/daniel/workspace/acc-tech-challenge/resources/BookStore.resource' on line 17: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-09-18T20:14:50.182543" level="WARN">Error in file '/home/daniel/workspace/acc-tech-challenge/resources/BookStore.resource' on line 26: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-09-18T20:14:50.183537" level="WARN">Error in file '/home/daniel/workspace/acc-tech-challenge/resources/BookStore.resource' on line 38: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-09-18T20:14:50.183888" level="WARN">Error in file '/home/daniel/workspace/acc-tech-challenge/resources/BookStore.resource' on line 45: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-09-18T20:14:53.899489" level="WARN">Keyword 'BuiltIn.Run Keyword Unless' is deprecated. </msg>
+</errors>
+</robot>
